@@ -3,6 +3,7 @@
 #include "BH1750.h"
 #include "BME280.h"
 #include "BMP280.h"
+#include "DS18X.h"
 #include "MMC56x3.h"
 #include "SI7021.h"
 #include "Timeline.h"
@@ -19,6 +20,7 @@ public:
         BH1750::SetupShell();
         BME280::SetupShell();
         BMP280::SetupShell();
+        DS18X::SetupShell();
         MMC56x3::SetupShell();
         SI7021::SetupShell();
     }
