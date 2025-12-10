@@ -370,7 +370,7 @@ bool One_wire::set_resolution(rom_address_t &address, unsigned int resolution) {
 			resolution = resolution - 9;
 			if (resolution < 4) {
 				resolution = resolution << 5;                    // align the bits
-				ram[4] = (uint8_t) ((ram[4] & 0x60) | resolution);// mask out old data, insert new
+				ram[4] = (uint8_t) ((ram[4] & ~0x60) | resolution);// mask out old data, insert new
 				write_scratch_pad(address, (ram[2] << 8) + ram[3]);
 				answer = true;
 			}
