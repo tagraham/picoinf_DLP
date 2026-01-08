@@ -7,6 +7,11 @@
 #include "Timeline.h"
 #include "WSPREncoder.h"
 
+// LOW_POWER_SINGLE_CLOCK: When defined, uses only CLK0 (single output)
+// for reduced power consumption at lower solar angles.
+// When not defined (default), uses CLK0 + CLK1 with 180-degree phase shift
+// for dual clock output.
+
 class WSPRMessageTransmitter
 {
 public:
@@ -83,6 +88,7 @@ public:
         radio_.set_clock_pwr(SI5351_CLK0, 1);
         radio_.output_enable(SI5351_CLK0, 1);
 
+#ifndef LOW_POWER_SINGLE_CLOCK
         // Fan out and invert the first clock signal for a
         // 180-degree phase shift on second clock
         radio_.set_clock_fanout(SI5351_FANOUT_MS, 1);
@@ -92,6 +98,7 @@ public:
         radio_.drive_strength(SI5351_CLK1, SI5351_DRIVE_8MA);
         radio_.set_clock_pwr(SI5351_CLK1, 1);
         radio_.output_enable(SI5351_CLK1, 1);
+#endif
 
         on_ = true;
     }
@@ -161,9 +168,11 @@ public:
         radio_.set_clock_pwr(SI5351_CLK0, 0);
         radio_.output_enable(SI5351_CLK0, 0);
         
+#ifndef LOW_POWER_SINGLE_CLOCK
         radio_.output_enable(SI5351_CLK1, 0);
         radio_.set_clock_pwr(SI5351_CLK1, 0);
-        
+#endif
+
         radio_.output_enable(SI5351_CLK2, 0);
         radio_.set_clock_pwr(SI5351_CLK2, 0);
 
@@ -173,7 +182,9 @@ public:
     void SetDrive(si5351_drive pwr)
     {
         radio_.drive_strength(SI5351_CLK0, pwr);
+#ifndef LOW_POWER_SINGLE_CLOCK
         radio_.drive_strength(SI5351_CLK1, pwr);
+#endif
     }
     void SetDrive2() { SetDrive(SI5351_DRIVE_2MA); }
     void SetDrive4() { SetDrive(SI5351_DRIVE_4MA); }
