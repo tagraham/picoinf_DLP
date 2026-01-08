@@ -39,10 +39,40 @@ Note:
 - There is no further documentation than this README (sorry -- see History)
 
 
+## WSPR Transmitter Configuration
+
+### LOW_POWER_SINGLE_CLOCK Mode
+
+The WSPR transmitter (`WSPRMessageTransmitter.h`) supports two clock output modes:
+
+**Default (dual clock output):**
+- Uses CLK0 + CLK1 with 180-degree phase shift
+- Higher power output
+- Compile normally without any special flags
+
+**Low Power Single Clock Mode:**
+- Uses only CLK0 (single output)
+- Reduced power consumption, suitable for lower solar angles
+- To enable, define `LOW_POWER_SINGLE_CLOCK` in your project's build configuration
+
+Example (in CMakeLists.txt):
+```cmake
+add_compile_definitions(LOW_POWER_SINGLE_CLOCK)
+```
+
+Or in platformio.ini:
+```ini
+build_flags = -DLOW_POWER_SINGLE_CLOCK
+```
+
+
+---
+
+*Note from the original developer:*
+
 History:
 - I built this library to support a few other projects not intending to make it visible to others
 - Then I decided to make it visible to others, that's why some things aren't quite perfect
-
 
 Finally:
 - I hope you find something useful or interesting here
@@ -50,6 +80,9 @@ Finally:
 - All code subject to change at any time, with no warning, including going private
 - Please see the LICENSE file
 
-
 Thanks.
+
+---
+
+Thank you to the original developer for making this project available. It is appreciated.
 
